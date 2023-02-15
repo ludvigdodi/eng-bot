@@ -1,6 +1,7 @@
 import requests
 import os
 import random
+from time import sleep
 import sqlite3 as sq
 from dotenv import load_dotenv
 
@@ -13,6 +14,7 @@ level = ''
 sentences = []
 
 def get_update(url, update_id):
+    sleep(5)
     responce = requests.get(f"{url}/getUpdates?offset={update_id + 1}")
     return responce.json()
 
@@ -70,6 +72,7 @@ def create_result_message(matched_sentences: list) -> str:
 
 # Прослушиваем бота на сервере Телеги
 def pooling():
+    sleep(5)
     global level
     answered_update_id = 0
     
@@ -88,8 +91,10 @@ def pooling():
                 else:
                     message_text = create_result_message(fill_matched_sentences(message_text))
                     send_message(chat_id, message_text, ROOT_URL)
+               
                 answered_update_id = update_id
 
 # Запуск бота
 if __name__ == '__main__':
     pooling()
+   
