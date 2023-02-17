@@ -14,7 +14,6 @@ level = ''
 sentences = []
 
 def get_update(url, update_id):
-    sleep(5)
     responce = requests.get(f"{url}/getUpdates?offset={update_id + 1}")
     return responce.json()
 
@@ -52,8 +51,8 @@ def get_sentences():
 # Поиск предложений
 def fill_matched_sentences(message):
     matched_sentences = []
-    for s in get_sentences():
-        for sentence in s:
+    for sentences_list in get_sentences():
+        for sentence in sentences_list:
             if message.lower() in sentence.lower():
                 matched_sentences.append(sentence)
     return matched_sentences
@@ -90,8 +89,7 @@ def pooling():
                     level = message_text        
                 else:
                     message_text = create_result_message(fill_matched_sentences(message_text))
-                    send_message(chat_id, message_text, ROOT_URL)
-               
+                    send_message(chat_id, message_text, ROOT_URL)               
                 answered_update_id = update_id
 
 # Запуск бота
